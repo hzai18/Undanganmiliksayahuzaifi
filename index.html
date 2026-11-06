@@ -60,9 +60,10 @@
                 <video id="bg-video" class="absolute top-0 left-0 w-full h-full object-cover opacity-60" playsinline>
                     <source src="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/Banjar%20-%20Nganten.id.mp4" type="video/mp4">
                 </video>
-                <div id="hero-text" class="relative z-10 flex flex-col items-center mt-20 opacity-0 transition-opacity duration-1000 ease-in text-center">
+                <!-- Posisi dinaikkan dengan mb-24 dan font size nama dikecilkan jadi text-5xl -->
+                <div id="hero-text" class="relative z-10 flex flex-col items-center mb-24 opacity-0 transition-opacity duration-1000 ease-in text-center">
                     <h3 class="font-cinzel tracking-widest text-xs mb-2 text-white uppercase drop-shadow-md">Pernikahan Kami</h3>
-                    <h1 class="font-cursive text-6xl mb-2 text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">Rifqi & Raudatul</h1>
+                    <h1 class="font-cursive text-5xl mb-2 text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">Rifqi & Raudatul</h1>
                 </div>
                 <div id="scroll-indicator" class="absolute bottom-8 right-6 z-10 flex flex-col items-center animate-bounce-slow opacity-0 transition-opacity duration-1000 ease-in">
                     <p class="font-cinzel text-[10px] gold-text mb-1 tracking-widest uppercase">Scroll</p>
@@ -169,22 +170,13 @@
                         </div>
                     </div>
 
-                    <!-- Tombol Maps -->
+                    <!-- Tombol Google Maps Saja -->
                     <div class="flex flex-col gap-3 mt-2">
-                        <!-- Google Maps Button -->
                         <a href="https://maps.app.goo.gl/4Vy6FuCS8TAFefjbA?g_st=iw" target="_blank" class="flex items-center justify-center gap-2 w-full px-6 py-3 bg-gold text-[#5c0a18] font-bold rounded-full hover:bg-yellow-400 transition shadow-lg">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                             </svg>
                             Buka di Google Maps
-                        </a>
-                        
-                        <!-- Apple Maps Button -->
-                        <a href="https://maps.apple.com/place?auid=7520509608495141409&address=Tatah+Mesjid%2C+Kabupaten+Barito+Kuala%2C+South+Kalimantan%2C+Indonesia&coordinate=-3.240417%2C114.604972&name=Tatah+Mesjid&lsp=7618" target="_blank" class="flex items-center justify-center gap-2 w-full px-6 py-3 border-2 border-[#d4af37] text-[#d4af37] font-bold rounded-full hover:bg-[#5c0a18] transition shadow-lg">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 384 512">
-                                <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.3 48.6-.7 90.4-82.5 104.8-130.6-37.8-21.2-56.8-59.6-56.1-99zM250.3 84.6c21.2-26 31.6-58.4 27.5-90.8-25.9 1.1-57.9 17.5-78.5 43.1-19.6 24.3-32.3 57.6-27.4 88.9 29.1 2.2 60.1-15.1 78.4-41.2z"/>
-                            </svg>
-                            Buka di Apple Maps
                         </a>
                     </div>
                 </div>
@@ -216,32 +208,33 @@
             </section>
 
             <!-- GALERI FOTO (6 FOTO) -->
+            <!-- Tinggi dibuat fix (h-72), Lebar dibuat dinamis mengikuti foto (w-auto) -->
             <section class="py-12 px-0 bg-[#3d040e] border-y-2 border-[#d4af37]">
                 <h2 class="font-cinzel text-xl gold-text text-center mb-6 uppercase">Galeri Foto</h2>
                 <div id="photo-gallery" class="flex overflow-x-auto snap-x snap-mandatory gap-4 px-6 pb-6 hide-scroll scroll-smooth items-center">
                     
-                    <div class="snap-center shrink-0 w-72 h-96 gold-border p-1 rounded-lg bg-[#5c0a18] shadow-lg">
-                        <img src="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/WhatsApp%20Image%202026-11-06%20at%2023.54.02.jpeg" class="w-full h-full object-cover object-center rounded" alt="Foto Galeri 1" loading="lazy">
+                    <div class="snap-center shrink-0 h-72 gold-border p-1 rounded-lg bg-[#5c0a18] shadow-lg">
+                        <img src="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/WhatsApp%20Image%202026-11-06%20at%2023.54.02.jpeg" class="h-full w-auto object-cover rounded" alt="Foto Galeri 1" loading="lazy">
                     </div>
                     
-                    <div class="snap-center shrink-0 w-72 h-96 gold-border p-1 rounded-lg bg-[#5c0a18] shadow-lg">
-                        <img src="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/WhatsApp%20Image%202026-11-06%20at%2023.57.36.jpeg" class="w-full h-full object-cover object-center rounded" alt="Foto Galeri 2" loading="lazy">
+                    <div class="snap-center shrink-0 h-72 gold-border p-1 rounded-lg bg-[#5c0a18] shadow-lg">
+                        <img src="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/WhatsApp%20Image%202026-11-06%20at%2023.57.36.jpeg" class="h-full w-auto object-cover rounded" alt="Foto Galeri 2" loading="lazy">
                     </div>
                     
-                    <div class="snap-center shrink-0 w-72 h-96 gold-border p-1 rounded-lg bg-[#5c0a18] shadow-lg">
-                        <img src="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/WhatsApp%20Image%202026-11-06%20at%2023.57.41.jpeg" class="w-full h-full object-cover object-center rounded" alt="Foto Galeri 3" loading="lazy">
+                    <div class="snap-center shrink-0 h-72 gold-border p-1 rounded-lg bg-[#5c0a18] shadow-lg">
+                        <img src="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/WhatsApp%20Image%202026-11-06%20at%2023.57.41.jpeg" class="h-full w-auto object-cover rounded" alt="Foto Galeri 3" loading="lazy">
                     </div>
                     
-                    <div class="snap-center shrink-0 w-72 h-96 gold-border p-1 rounded-lg bg-[#5c0a18] shadow-lg">
-                        <img src="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/WhatsApp%20Image%202026-11-06%20at%2023.58.54.jpeg" class="w-full h-full object-cover object-center rounded" alt="Foto Galeri 4" loading="lazy">
+                    <div class="snap-center shrink-0 h-72 gold-border p-1 rounded-lg bg-[#5c0a18] shadow-lg">
+                        <img src="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/WhatsApp%20Image%202026-11-06%20at%2023.58.54.jpeg" class="h-full w-auto object-cover rounded" alt="Foto Galeri 4" loading="lazy">
                     </div>
                     
-                    <div class="snap-center shrink-0 w-72 h-96 gold-border p-1 rounded-lg bg-[#5c0a18] shadow-lg">
-                        <img src="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/WhatsApp%20Image%202026-11-06%20at%2023.59.40.jpeg" class="w-full h-full object-cover object-center rounded" alt="Foto Galeri 5" loading="lazy">
+                    <div class="snap-center shrink-0 h-72 gold-border p-1 rounded-lg bg-[#5c0a18] shadow-lg">
+                        <img src="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/WhatsApp%20Image%202026-11-06%20at%2023.59.40.jpeg" class="h-full w-auto object-cover rounded" alt="Foto Galeri 5" loading="lazy">
                     </div>
 
-                    <div class="snap-center shrink-0 w-72 h-96 gold-border p-1 rounded-lg bg-[#5c0a18] shadow-lg">
-                        <img src="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/WhatsApp%20Image%202026-11-07%20at%2000.02.16.jpeg" class="w-full h-full object-cover object-center rounded" alt="Foto Galeri 6" loading="lazy">
+                    <div class="snap-center shrink-0 h-72 gold-border p-1 rounded-lg bg-[#5c0a18] shadow-lg">
+                        <img src="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/WhatsApp%20Image%202026-11-07%20at%2000.02.16.jpeg" class="h-full w-auto object-cover rounded" alt="Foto Galeri 6" loading="lazy">
                     </div>
 
                 </div>
@@ -324,7 +317,7 @@
             </footer>
 
             <!-- AUDIO & TOMBOL KONTROL KIRI BAWAH -->
-            <audio id="bg-audio" loop>
+            <audio id="bg-audio" loop preload="auto">
                 <source src="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/NUCA%20-%20MASA%20INI%2C%20NANTI%2C%20DAN%20MASA%20INDAH%20LAINNYA%20(OFFICIAL%20LYRIC%20VIDEO)%20%5BxnrFiwjyr-o%5D_%5Bcut_155sec%5D%20(1).mp3" type="audio/mpeg">
             </audio>
 
@@ -351,6 +344,17 @@
         const audioBtn = document.getElementById('audio-control');
 
         function bukaUndangan() {
+            // EKSEKUSI PERTAMA (Bypass Chrome Autoplay Block)
+            // Memutar audio di baris pertama klik akan diizinkan oleh sistem keamanan browser
+            audio.play().then(() => {
+                isPlaying = true;
+                audioBtn.classList.remove('opacity-0');
+                audioBtn.classList.add('spin-slow');
+                audioBtn.classList.remove('pause-spin');
+            }).catch(err => {
+                console.log("Audio play ditahan browser:", err);
+            });
+
             // Geser Cover Ke Atas
             document.getElementById('cover-page').style.transform = 'translateY(-100%)';
             document.getElementById('mobile-wrapper').style.overflowY = 'auto';
@@ -358,18 +362,11 @@
             // Video Latar Belakang
             let video = document.getElementById('bg-video');
             video.muted = true;
+            video.play().catch(err => console.log("Video error:", err));
             video.addEventListener('timeupdate', function() { if (video.currentTime >= 8) munculkanTeks(); });
-            video.play().catch(function() { setTimeout(munculkanTeks, 8000); });
-
-            // Putar Audio & Tampilkan Tombol Kiri Bawah
-            audioBtn.classList.remove('opacity-0');
-            audio.play().then(() => {
-                isPlaying = true;
-                audioBtn.classList.add('spin-slow');
-            }).catch(err => {
-                console.log("Audio ditahan browser");
-                isPlaying = false;
-            });
+            
+            // Fallback timeout untuk munculkan teks jika video gagal loading
+            setTimeout(munculkanTeks, 8000);
         }
 
         function toggleAudio() {
@@ -427,11 +424,11 @@
             document.getElementById("detik").innerHTML = seconds < 10 ? "0" + seconds : seconds;
         }, 1000);
 
-        // Script Auto-Scroll Galeri Foto (Penyesuaian ukuran lebar baru)
+        // Script Auto-Scroll Galeri Foto disesuaikan dengan padding fleksibel
         const gallery = document.getElementById('photo-gallery');
         setInterval(() => {
             if (!gallery) return;
-            const scrollStep = 300; // Disesuaikan dengan lebar w-72 (288px) + gap
+            const scrollStep = 250; 
             const maxScroll = gallery.scrollWidth - gallery.clientWidth;
 
             if (gallery.scrollLeft >= maxScroll - 5) {
