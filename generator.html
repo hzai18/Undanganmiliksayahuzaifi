@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Link Undangan Rifqi & Raudatul</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a0206; font-family: sans-serif; color: #fff; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="bg-[#5c0a18] p-6 sm:p-8 rounded-2xl shadow-2xl border border-[#d4af37] w-full max-w-md relative overflow-hidden">
+        <!-- Ornamen background -->
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+
+        <div class="relative z-10">
+            <h1 class="text-2xl font-bold text-[#d4af37] mb-2 text-center">Buat Link Undangan</h1>
+            <p class="text-sm text-gray-300 text-center mb-6">Rifqi & Raudatul</p>
+
+            <!-- Input Nama & Tombol Generate -->
+            <div class="mb-5">
+                <label for="namaTamu" class="block text-sm font-semibold text-[#d4af37] mb-2">Nama Tamu:</label>
+                <div class="flex gap-2">
+                    <input type="text" id="namaTamu" placeholder="Contoh: Bpk. Agus Sudjeni" 
+                           class="w-full p-3 rounded-lg bg-[#3d040e] border border-[#d4af37] text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition shadow-inner">
+                    <button onclick="generateLink()" class="bg-[#d4af37] text-[#1a0206] font-bold px-4 rounded-lg hover:bg-yellow-400 transition shadow">
+                        Generate
+                    </button>
+                </div>
+            </div>
+
+            <!-- Output Link -->
+            <div class="mb-6">
+                <label for="hasilLink" class="block text-sm font-semibold text-[#d4af37] mb-2">Link Anda:</label>
+                <textarea id="hasilLink" readonly rows="2"
+                          class="w-full p-3 rounded-lg bg-[#1a0206] border border-gray-600 text-yellow-400 text-sm focus:outline-none resize-none shadow-inner">https://invitation-rifqi-raudatul.vercel.app/</textarea>
+            </div>
+
+            <!-- Tombol Aksi -->
+            <div class="flex flex-col gap-3">
+                <button onclick="salinLink()" id="btnSalin"
+                        class="w-full bg-[#d4af37] text-[#1a0206] font-bold py-3 rounded-lg hover:bg-yellow-400 transition shadow-lg flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    Salin Link Saja
+                </button>
+
+                <button onclick="bagikanWA()"
+                        class="w-full bg-[#25D366] text-white font-bold py-3 rounded-lg hover:bg-green-500 transition shadow-lg flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.183-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.765-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-5.824 4.74-10.563 10.581-10.563 5.824 0 10.563 4.74 10.563 10.563 0 5.825-4.74 10.565-10.565 10.565z"/></svg>
+                    Kirim Format ke WhatsApp
+                </button>
+            </div>
+            
+            <!-- Template Teks WhatsApp (Bisa diedit manual oleh user di web) -->
+            <div class="mt-6">
+                <label for="templatePesan" class="block text-xs font-semibold text-[#d4af37] mb-2">Template Kata-kata WA (Bebas Diedit):</label>
+                <textarea id="templatePesan" rows="15"
+                          class="w-full p-3 rounded-lg bg-[#3d040e] border border-[#d4af37] text-gray-200 text-xs focus:outline-none focus:ring-1 focus:ring-yellow-500 shadow-inner">Assalamu’alaikum Warahmatullahi Wabarakatuh
+Yth. Bapak/Ibu/Saudara/i 
+[Nama Tamu]
+
+Tanpa mengurangi rasa hormat, sehubungan dengan keterbatasan jarak dan waktu, melalui pesan ini kami bermaksud menyampaikan kabar bahagia serta mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu pada acara pernikahan kami:
+*Rifqi Huzaifi, S.H. & Raudatul Jannah*
+
+Detail informasi mengenai acara, tanggal, dan lokasi selengkapnya dapat diakses melalui tautan undangan digital berikut:
+🔗 [Link yang sudah digenerate]
+
+Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu bagi kelancaran serta keberkahan pernikahan kami.
+Mohon maaf atas penyampaian undangan yang dilakukan melalui media digital ini. Terima kasih.
+
+Wassalamu’alaikum Warahmatullahi Wabarakatuh
+Kami yang berbahagia,
+*Rifqi & Raudatul*</textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const baseUrl = "https://invitation-rifqi-raudatul.vercel.app/";
+        const inputNama = document.getElementById('namaTamu');
+        const outputLink = document.getElementById('hasilLink');
+        const templatePesan = document.getElementById('templatePesan');
+
+        // Fungsi Generate (Dijalankan Saat Tombol Ditekan)
+        function generateLink() {
+            let nama = inputNama.value.trim();
+            if (nama === "") {
+                outputLink.value = baseUrl;
+            } else {
+                // Konversi spasi menjadi tanda plus (+) agar aman di link web
+                let namaEncoded = encodeURIComponent(nama).replace(/%20/g, '+');
+                outputLink.value = baseUrl + "?to=" + namaEncoded;
+            }
+        }
+
+        // Fungsi Tombol Salin
+        function salinLink() {
+            // Pastikan link di-generate ulang untuk berjaga-jaga
+            generateLink();
+            
+            outputLink.select();
+            outputLink.setSelectionRange(0, 99999); 
+            navigator.clipboard.writeText(outputLink.value).then(() => {
+                const btn = document.getElementById('btnSalin');
+                const svgIkon = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>`;
+                
+                btn.innerHTML = "Berhasil Disalin!";
+                btn.classList.replace('bg-[#d4af37]', 'bg-green-500');
+                btn.classList.replace('text-[#1a0206]', 'text-white');
+                
+                setTimeout(() => {
+                    btn.innerHTML = svgIkon + " Salin Link Saja";
+                    btn.classList.replace('bg-green-500', 'bg-[#d4af37]');
+                    btn.classList.replace('text-white', 'text-[#1a0206]');
+                }, 2000);
+            }).catch(() => {
+                alert("Browser Anda tidak mendukung salin otomatis. Silakan salin manual pada kotak link.");
+            });
+        }
+
+        // Fungsi Kirim ke WhatsApp
+        function bagikanWA() {
+            // Pastikan link valid sebelum dikirim
+            generateLink();
+            
+            let nama = inputNama.value.trim();
+            let link = outputLink.value;
+            let pesanText = templatePesan.value;
+            
+            // Variabel pengganti nama tamu (default jika dikosongkan)
+            let namaTujuan = nama !== "" ? nama : "Tamu Undangan";
+            
+            // Mereplace string template dengan nilai asli
+            pesanText = pesanText.replace('[Nama Tamu]', namaTujuan);
+            pesanText = pesanText.replace('[Link yang sudah digenerate]', link);
+
+            // Eksekusi buka aplikasi WhatsApp (Bekerja di Web / HP)
+            let urlWA = "https://api.whatsapp.com/send?text=" + encodeURIComponent(pesanText);
+            window.open(urlWA, '_blank');
+        }
+    </script>
+</body>
+</html>
