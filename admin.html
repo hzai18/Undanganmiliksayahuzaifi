@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Rifqi & Raudatul</title>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/hzai18/Undanganmiliksayahuzaifi/refs/heads/main/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #1a0206; font-family: 'Lora', serif; color: #fce7b2; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .gold-border { border: 1px solid #d4af37; }
+        .gold-text { color: #d4af37; }
+        .bg-gold { background-color: #d4af37; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-4">
+
+    <!-- LAYAR LOGIN PIN -->
+    <div id="login-screen" class="fixed inset-0 bg-[#1a0206] z-50 flex items-center justify-center p-4">
+        <div class="bg-[#5c0a18] border-2 border-[#d4af37] p-8 rounded-2xl w-full max-w-sm text-center shadow-2xl">
+            <h1 class="font-cinzel text-xl gold-text font-bold mb-1">Admin Undangan</h1>
+            <p class="text-xs text-gray-300 mb-6">Rifqi & Raudatul</p>
+            
+            <form id="login-form" class="flex flex-col gap-4">
+                <input type="password" id="pin-input" placeholder="Masukkan PIN Admin" required
+                       class="w-full p-3 rounded-lg bg-[#3d040e] border border-[#d4af37] text-center text-white tracking-widest focus:outline-none">
+                <button type="submit" class="w-full py-3 bg-gold text-[#1a0206] font-bold rounded-lg hover:bg-yellow-400 transition">
+                    Masuk Panel
+                </button>
+            </form>
+            <p id="login-error" class="text-xs text-red-400 mt-3 hidden">PIN salah. Silakan coba lagi.</p>
+        </div>
+    </div>
+
+    <!-- DASHBOARD ADMIN -->
+    <div id="admin-dashboard" class="w-full max-w-2xl hidden">
+        
+        <!-- Header -->
+        <div class="bg-[#5c0a18] border border-[#d4af37] rounded-xl p-5 mb-4 flex justify-between items-center shadow-lg">
+            <div>
+                <h1 class="font-cinzel text-lg sm:text-xl gold-text font-bold">Panel Kontrol Undangan</h1>
+                <p class="text-xs text-gray-300">Rifqi Huzaifi, S.H. & Raudatul Jannah</p>
+            </div>
+            <button onclick="logoutAdmin()" class="px-3 py-1.5 text-xs border border-[#d4af37] text-[#d4af37] rounded-lg hover:bg-[#3d040e] transition">
+                Kunci
+            </button>
+        </div>
+
+        <!-- Ringkasan Statistik & Rekap Kehadiran -->
+        <div class="grid grid-cols-3 gap-3 mb-5 text-center">
+            <div class="bg-[#3d040e] border border-[#d4af37]/50 p-3 rounded-xl">
+                <p id="stat-pending" class="text-2xl font-bold text-yellow-400">0</p>
+                <p class="text-[11px] text-gray-300">Permintaan Baru</p>
+            </div>
+            <div class="bg-[#3d040e] border border-[#d4af37]/50 p-3 rounded-xl">
+                <p id="stat-approved" class="text-2xl font-bold text-green-400">0</p>
+                <p class="text-[11px] text-gray-300">Sudah Tampil</p>
+            </div>
+            <div class="bg-[#3d040e] border border-[#d4af37]/50 p-3 rounded-xl">
+                <p id="stat-guests" class="text-2xl font-bold text-white">0</p>
+                <p class="text-[11px] text-gray-300">Estimasi Hadir</p>
+            </div>
+        </div>
+
+        <!-- Tab Navigasi Utama (3 Tab) -->
+        <div class="grid grid-cols-3 gap-2 mb-5">
+            <button id="tab-pending" onclick="switchTab('pending')" class="py-2.5 px-2 text-xs font-bold rounded-lg bg-gold text-[#1a0206] transition">
+                Permintaan (<span id="badge-pending">0</span>)
+            </button>
+            <button id="tab-approved" onclick="switchTab('approved')" class="py-2.5 px-2 text-xs font-bold rounded-lg bg-[#3d040e] text-[#d4af37] border border-[#d4af37]/50 transition">
+                Tampil (<span id="badge-approved">0</span>)
+            </button>
+            <button id="tab-gift" onclick="switchTab('gift')" class="py-2.5 px-2 text-xs font-bold rounded-lg bg-[#3d040e] text-[#d4af37] border border-[#d4af37]/50 transition">
+                Wedding Gift (<span id="badge-gift-status">ON</span>)
+            </button>
+        </div>
+
+        <!-- VIEW 1 & 2: MODERASI PESAN BUKU TAMU -->
+        <div id="view-messages" class="space-y-3 pb-10">
+            <p class="text-center text-xs text-gray-400 italic py-8">Memuat data pesan...</p>
+        </div>
+
+        <!-- VIEW 3: PENGATURAN WEDDING GIFT -->
+        <div id="view-gift" class="hidden space-y-5 pb-10">
+            
+            <!-- Saklar Utama Hidup / Mati Bagian Wedding Gift -->
+            <div class="bg-[#5c0a18] border border-[#d4af37] p-5 rounded-xl flex items-center justify-between gap-4 shadow-lg">
+                <div>
+                    <h2 class="font-cinzel text-sm sm:text-base font-bold gold-text">Tampilkan Bagian Wedding Gift</h2>
+                    <p id="gift-master-desc" class="text-xs text-gray-300 mt-1">Status aktif: Kotak hadiah tampil di website utama.</p>
+                </div>
+                <button id="btn-toggle-master-gift" onclick="toggleMasterGift()" class="px-5 py-2.5 rounded-full text-xs font-bold bg-green-600 text-white shadow transition shrink-0">
+                    AKTIF (ON)
+                </button>
+            </div>
+
+            <!-- Form Tambah Rekening / E-Wallet Baru -->
+            <div class="bg-[#3d040e] border border-[#d4af37]/60 p-5 rounded-xl shadow-lg">
+                <h3 class="font-cinzel text-sm font-bold gold-text mb-3 uppercase">Tambah Rekening / E-Wallet</h3>
+                <form id="add-account-form" class="space-y-3">
+                    <div>
+                        <label class="block text-xs text-gray-300 mb-1">Nama Bank atau E-Wallet</label>
+                        <input type="text" id="gift-bank" placeholder="Contoh: BRI / BCA / BSI / DANA / ShopeePay" required
+                               class="w-full p-2.5 text-sm rounded-lg bg-[#5c0a18] border border-[#d4af37]/60 text-white focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-300 mb-1">Nomor Rekening / Nomor HP</label>
+                        <input type="text" id="gift-number" placeholder="Contoh: 0896 - 9216 - 3449" required
+                               class="w-full p-2.5 text-sm rounded-lg bg-[#5c0a18] border border-[#d4af37]/60 text-white focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-300 mb-1">Atas Nama Pemilik</label>
+                        <input type="text" id="gift-name" placeholder="Contoh: Rifqi Huzaifi / Raudatul Jannah" required
+                               class="w-full p-2.5 text-sm rounded-lg bg-[#5c0a18] border border-[#d4af37]/60 text-white focus:outline-none">
+                    </div>
+                    <button type="submit" id="btn-add-account" class="w-full py-2.5 bg-gold text-[#1a0206] text-xs sm:text-sm font-bold rounded-lg hover:bg-yellow-400 transition shadow">
+                        + Tambahkan Rekening
+                    </button>
+                </form>
+            </div>
+
+            <!-- Daftar Rekening Tersimpan -->
+            <div>
+                <h3 class="font-cinzel text-sm font-bold gold-text mb-3 uppercase">Daftar Rekening Tersimpan</h3>
+                <div id="admin-accounts-list" class="space-y-3">
+                    <p class="text-center text-xs text-gray-400 italic py-4">Memuat daftar rekening...</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy, doc, updateDoc, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // PIN ADMIN (Ubah sesuai keinginan Anda)
+        const ADMIN_PIN = "211126";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2-3ZhA1-Rnzl-7IaPzSDUJiBFbYU3qZM",
+            authDomain: "undangan-rifqi-atul.firebaseapp.com",
+            projectId: "undangan-rifqi-atul",
+            storageBucket: "undangan-rifqi-atul.firebasestorage.app",
+            messagingSenderId: "312130579775",
+            appId: "1:312130579775:web:04224b4c5889a2f7f7b78a",
+            measurementId: "G-FSJ0Y4V8GR"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const rsvpCollection = collection(db, "rsvp");
+        const giftDocRef = doc(db, "settings", "wedding_gift");
+
+        let allMessages = [];
+        let currentTab = "pending";
+        let giftSettings = {
+            enabled: true,
+            accounts: [
+                {
+                    id: "default-dana",
+                    bank: "DANA",
+                    number: "0896 - 9216 - 3449",
+                    name: "Raudatul Jannah",
+                    active: true
+                }
+            ]
+        };
+
+        /* ==========================================
+           SISTEM LOGIN PIN
+        ========================================== */
+        const loginScreen = document.getElementById("login-screen");
+        const dashboard = document.getElementById("admin-dashboard");
+        const loginForm = document.getElementById("login-form");
+        const loginError = document.getElementById("login-error");
+
+        if (sessionStorage.getItem("admin_unlocked") === "true") {
+            loginScreen.classList.add("hidden");
+            dashboard.classList.remove("hidden");
+        }
+
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const pin = document.getElementById("pin-input").value;
+            if (pin === ADMIN_PIN) {
+                sessionStorage.setItem("admin_unlocked", "true");
+                loginScreen.classList.add("hidden");
+                dashboard.classList.remove("hidden");
+                loginError.classList.add("hidden");
+            } else {
+                loginError.classList.remove("hidden");
+            }
+        });
+
+        window.logoutAdmin = function() {
+            sessionStorage.removeItem("admin_unlocked");
+            location.reload();
+        };
+
+        /* ==========================================
+           NAVIGASI TAB
+        ========================================== */
+        window.switchTab = function(tab) {
+            currentTab = tab;
+            const tabs = {
+                pending: document.getElementById("tab-pending"),
+                approved: document.getElementById("tab-approved"),
+                gift: document.getElementById("tab-gift")
+            };
+
+            Object.keys(tabs).forEach(key => {
+                if (key === tab) {
+                    tabs[key].className = "py-2.5 px-2 text-xs font-bold rounded-lg bg-gold text-[#1a0206] transition";
+                } else {
+                    tabs[key].className = "py-2.5 px-2 text-xs font-bold rounded-lg bg-[#3d040e] text-[#d4af37] border border-[#d4af37]/50 transition";
+                }
+            });
+
+            if (tab === "gift") {
+                document.getElementById("view-messages").classList.add("hidden");
+                document.getElementById("view-gift").classList.remove("hidden");
+            } else {
+                document.getElementById("view-gift").classList.add("hidden");
+                document.getElementById("view-messages").classList.remove("hidden");
+                renderMessages();
+            }
+        };
+
+        /* ==========================================
+           KELOLA PENGATURAN WEDDING GIFT
+        ========================================== */
+        async function saveGiftSettings() {
+            try {
+                await setDoc(giftDocRef, giftSettings);
+            } catch (err) {
+                alert("Gagal menyimpan pengaturan Wedding Gift: " + err.message);
+            }
+        }
+
+        window.toggleMasterGift = async function() {
+            giftSettings.enabled = !giftSettings.enabled;
+            await saveGiftSettings();
+        };
+
+        window.toggleSingleAccount = async function(id) {
+            giftSettings.accounts = giftSettings.accounts.map(acc => {
+                if (acc.id === id) {
+                    return { ...acc, active: acc.active === false ? true : false };
+                }
+                return acc;
+            });
+            await saveGiftSettings();
+        };
+
+        window.deleteAccount = async function(id, bank) {
+            if (!confirm(`Hapus rekening ${bank} ini secara permanen?`)) return;
+            giftSettings.accounts = giftSettings.accounts.filter(acc => acc.id !== id);
+            await saveGiftSettings();
+        };
+
+        document.getElementById("add-account-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const bank = document.getElementById("gift-bank").value.trim().toUpperCase();
+            const number = document.getElementById("gift-number").value.trim();
+            const name = document.getElementById("gift-name").value.trim();
+
+            if (!bank || !number || !name) return;
+
+            const btn = document.getElementById("btn-add-account");
+            btn.disabled = true;
+            btn.textContent = "Menyimpan...";
+
+            giftSettings.accounts.push({
+                id: "acc-" + Date.now(),
+                bank: bank,
+                number: number,
+                name: name,
+                active: true
+            });
+
+            await saveGiftSettings();
+
+            document.getElementById("gift-bank").value = "";
+            document.getElementById("gift-number").value = "";
+            document.getElementById("gift-name").value = "";
+            btn.disabled = false;
+            btn.textContent = "+ Tambahkan Rekening";
+        });
+
+        function renderGiftAdmin() {
+            const masterBtn = document.getElementById("btn-toggle-master-gift");
+            const masterDesc = document.getElementById("gift-master-desc");
+            const badgeStatus = document.getElementById("badge-gift-status");
+            const listEl = document.getElementById("admin-accounts-list");
+
+            if (giftSettings.enabled) {
+                masterBtn.textContent = "AKTIF (ON)";
+                masterBtn.className = "px-5 py-2.5 rounded-full text-xs font-bold bg-green-600 hover:bg-green-500 text-white shadow transition shrink-0";
+                masterDesc.textContent = "Status aktif: Bagian Wedding Gift tampil di undangan.";
+                badgeStatus.textContent = "ON";
+            } else {
+                masterBtn.textContent = "NONAKTIF (OFF)";
+                masterBtn.className = "px-5 py-2.5 rounded-full text-xs font-bold bg-red-700 hover:bg-red-600 text-white shadow transition shrink-0";
+                masterDesc.textContent = "Status mati: Bagian Wedding Gift disembunyikan dari tamu.";
+                badgeStatus.textContent = "OFF";
+            }
+
+            listEl.innerHTML = "";
+            if (!giftSettings.accounts || giftSettings.accounts.length === 0) {
+                listEl.innerHTML = `<p class="text-center text-xs text-gray-400 italic py-6 bg-[#3d040e] rounded-xl border border-[#d4af37]/30">Belum ada rekening tersimpan. Tambahkan melalui formulir di atas.</p>`;
+                return;
+            }
+
+            giftSettings.accounts.forEach(acc => {
+                const isActive = acc.active !== false;
+                const card = document.createElement("div");
+                card.className = `bg-[#5c0a18] border ${isActive ? 'border-[#d4af37]/60' : 'border-gray-600 opacity-70'} p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow`;
+
+                const infoDiv = document.createElement("div");
+                
+                const headerLine = document.createElement("div");
+                headerLine.className = "flex items-center gap-2";
+                const bankBadge = document.createElement("span");
+                bankBadge.className = "font-bold text-sm gold-text uppercase";
+                bankBadge.textContent = acc.bank;
+
+                const statusPill = document.createElement("span");
+                statusPill.className = isActive 
+                    ? "text-[10px] px-2 py-0.5 rounded bg-green-900/90 text-green-200" 
+                    : "text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-300";
+                statusPill.textContent = isActive ? "Tampil" : "Disembunyikan";
+
+                headerLine.appendChild(bankBadge);
+                headerLine.appendChild(statusPill);
+
+                const numLine = document.createElement("p");
+                numLine.className = "font-mono text-base text-white font-bold mt-1";
+                numLine.textContent = acc.number;
+
+                const nameLine = document.createElement("p");
+                nameLine.className = "text-xs text-gray-300";
+                nameLine.textContent = "a.n. " + acc.name;
+
+                infoDiv.appendChild(headerLine);
+                infoDiv.appendChild(numLine);
+                infoDiv.appendChild(nameLine);
+
+                const actionsDiv = document.createElement("div");
+                actionsDiv.className = "flex items-center gap-2 self-end sm:self-center shrink-0";
+
+                const toggleBtn = document.createElement("button");
+                toggleBtn.className = isActive
+                    ? "px-3 py-1.5 bg-yellow-600 hover:bg-yellow-500 text-white text-xs font-bold rounded-lg transition"
+                    : "px-3 py-1.5 bg-green-600 hover:bg-green-500 text-white text-xs font-bold rounded-lg transition";
+                toggleBtn.textContent = isActive ? "Matikan" : "Hidupkan";
+                toggleBtn.onclick = () => window.toggleSingleAccount(acc.id);
+
+                const delBtn = document.createElement("button");
+                delBtn.className = "px-3 py-1.5 bg-red-700 hover:bg-red-600 text-white text-xs font-bold rounded-lg transition";
+                delBtn.textContent = "Hapus";
+                delBtn.onclick = () => window.deleteAccount(acc.id, acc.bank);
+
+                actionsDiv.appendChild(toggleBtn);
+                actionsDiv.appendChild(delBtn);
+
+                card.appendChild(infoDiv);
+                card.appendChild(actionsDiv);
+                listEl.appendChild(card);
+            });
+        }
+
+        onSnapshot(giftDocRef, async (docSnap) => {
+            if (!docSnap.exists()) {
+                // Inisialisasi data DANA default ke Firestore saat admin pertama kali dibuka
+                await saveGiftSettings();
+                return;
+            }
+            const data = docSnap.data();
+            giftSettings = {
+                enabled: data.enabled !== false,
+                accounts: Array.isArray(data.accounts) ? data.accounts : []
+            };
+            renderGiftAdmin();
+        });
+
+        /* ==========================================
+           KELOLA MODERASI PESAN BUKU TAMU
+        ========================================== */
+        window.approveMessage = async function(id) {
+            try {
+                await updateDoc(doc(db, "rsvp", id), { approved: true });
+            } catch (err) {
+                alert("Gagal menyetujui pesan: " + err.message);
+            }
+        };
+
+        window.hideMessage = async function(id) {
+            try {
+                await updateDoc(doc(db, "rsvp", id), { approved: false });
+            } catch (err) {
+                alert("Gagal menyembunyikan pesan: " + err.message);
+            }
+        };
+
+        window.deleteMessage = async function(id, nama) {
+            if (!confirm(`Yakin ingin menghapus permanen pesan dari "${nama}"?`)) return;
+            try {
+                await deleteDoc(doc(db, "rsvp", id));
+            } catch (err) {
+                alert("Gagal menghapus pesan: " + err.message);
+            }
+        };
+
+        function renderMessages() {
+            const listEl = document.getElementById("view-messages");
+            listEl.innerHTML = "";
+
+            const filtered = allMessages.filter(item => {
+                if (currentTab === "approved") return item.approved === true;
+                return item.approved !== true;
+            });
+
+            if (filtered.length === 0) {
+                listEl.innerHTML = `<p class="text-center text-xs text-gray-400 italic py-8">Tidak ada pesan di kategori ini.</p>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "bg-[#5c0a18] border border-[#d4af37]/50 p-4 rounded-xl shadow-md flex flex-col gap-2";
+
+                const topRow = document.createElement("div");
+                topRow.className = "flex justify-between items-start gap-2";
+
+                const nameBlock = document.createElement("div");
+                const nameEl = document.createElement("h3");
+                nameEl.className = "font-bold text-sm gold-text";
+                nameEl.textContent = item.nama;
+
+                const badgeEl = document.createElement("span");
+                badgeEl.className = item.jumlah === "Tidak Hadir" 
+                    ? "inline-block text-[10px] px-2 py-0.5 rounded bg-red-900/80 text-red-200 mt-1"
+                    : "inline-block text-[10px] px-2 py-0.5 rounded bg-green-900/80 text-green-200 mt-1";
+                badgeEl.textContent = item.jumlah;
+
+                nameBlock.appendChild(nameEl);
+                nameBlock.appendChild(badgeEl);
+
+                const timeEl = document.createElement("span");
+                timeEl.className = "text-[10px] text-gray-300 shrink-0";
+                timeEl.textContent = item.waktu;
+
+                topRow.appendChild(nameBlock);
+                topRow.appendChild(timeEl);
+
+                const msgEl = document.createElement("p");
+                msgEl.className = "text-xs text-gray-100 bg-[#3d040e] p-3 rounded-lg border border-[#d4af37]/20 whitespace-pre-line";
+                msgEl.textContent = item.pesan;
+
+                const actionRow = document.createElement("div");
+                actionRow.className = "flex justify-end gap-2 mt-1";
+
+                if (currentTab === "pending") {
+                    const btnAcc = document.createElement("button");
+                    btnAcc.className = "px-4 py-1.5 bg-green-600 hover:bg-green-500 text-white text-xs font-bold rounded-lg transition shadow";
+                    btnAcc.textContent = "ACC & Tampilkan";
+                    btnAcc.onclick = () => window.approveMessage(item.id);
+                    actionRow.appendChild(btnAcc);
+                } else {
+                    const btnHide = document.createElement("button");
+                    btnHide.className = "px-3 py-1.5 bg-yellow-600 hover:bg-yellow-500 text-white text-xs font-bold rounded-lg transition";
+                    btnHide.textContent = "Sembunyikan";
+                    btnHide.onclick = () => window.hideMessage(item.id);
+                    actionRow.appendChild(btnHide);
+                }
+
+                const btnDel = document.createElement("button");
+                btnDel.className = "px-3 py-1.5 bg-red-700 hover:bg-red-600 text-white text-xs font-bold rounded-lg transition";
+                btnDel.textContent = "Hapus";
+                btnDel.onclick = () => window.deleteMessage(item.id, item.nama);
+                actionRow.appendChild(btnDel);
+
+                card.appendChild(topRow);
+                card.appendChild(msgEl);
+                card.appendChild(actionRow);
+                listEl.appendChild(card);
+            });
+        }
+
+        const q = query(rsvpCollection, orderBy("timestamp", "desc"));
+        onSnapshot(q, (snapshot) => {
+            allMessages = [];
+            let pendingCount = 0;
+            let approvedCount = 0;
+            let guestCount = 0;
+
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const waktuStr = data.timestamp 
+                    ? data.timestamp.toDate().toLocaleString("id-ID", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) 
+                    : "Baru saja";
+
+                if (data.approved === true) {
+                    approvedCount++;
+                } else {
+                    pendingCount++;
+                }
+
+                if (data.jumlah === "1 Orang") guestCount += 1;
+                if (data.jumlah === "2 Orang") guestCount += 2;
+
+                allMessages.push({
+                    id: docSnap.id,
+                    nama: data.nama || "Tanpa Nama",
+                    jumlah: data.jumlah || "-",
+                    pesan: data.pesan || "",
+                    approved: data.approved === true,
+                    waktu: waktuStr
+                });
+            });
+
+            document.getElementById("stat-pending").textContent = pendingCount;
+            document.getElementById("stat-approved").textContent = approvedCount;
+            document.getElementById("stat-guests").textContent = guestCount;
+            document.getElementById("badge-pending").textContent = pendingCount;
+            document.getElementById("badge-approved").textContent = approvedCount;
+
+            if (currentTab !== "gift") {
+                renderMessages();
+            }
+        });
+    </script>
+</body>
+</html>
